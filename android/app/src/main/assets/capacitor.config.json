@@ -1,0 +1,9 @@
+{
+	"appId": "com.studentmate.app",
+	"appName": "StudentMate",
+	"webDir": "www",
+	"bundledWebRuntime": false,
+	"server": {
+		"androidScheme": "https"
+	}
+}

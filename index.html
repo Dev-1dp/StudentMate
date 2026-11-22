@@ -1,0 +1,1608 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="StudentMate - Your personal student life management dashboard">
+
+    <meta name="theme-color" content="#2563eb">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' http://localhost:8000; img-src 'self' data: blob:; style-src 'self'; script-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none';">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon.svg" type="image/svg+xml">
+
+    <title>StudentMate | Student Dashboard</title>
+
+    <!-- Connect CSS -->
+   <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <section id="authScreen" class="auth-screen">
+        <div class="auth-brand"><img class="logo-icon" src="icon.svg" alt=""><span>StudentMate</span></div>
+        <div class="auth-showcase">
+            <span class="showcase-kicker">A calmer way to study</span>
+            <h2>Your semester,<br><em>in one clear place.</em></h2>
+            <p>Keep your classes, tasks, notes, and important updates close at hand so your next step is always obvious.</p>
+            <div class="showcase-stats">
+                <span><strong>01</strong><small>Plan your week</small></span>
+                <span><strong>02</strong><small>Track your progress</small></span>
+                <span><strong>03</strong><small>Stay in control</small></span>
+            </div>
+        </div>
+        <div class="auth-card">
+            <div class="auth-heading">
+                <span class="eyebrow">Your study space</span>
+                <h1 id="authTitle">Welcome back</h1>
+                <p id="authSubtitle">Sign in to continue to your personal dashboard.</p>
+            </div>
+            <form id="authForm">
+                <div id="authNameField" class="auth-field hidden">
+                    <label for="authName">Full name</label>
+                    <input id="authName" type="text" autocomplete="name" placeholder="Alex Johnson">
+                </div>
+                <label for="authEmail">Email address</label>
+                <input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com" required>
+                <label for="authPassword">Password</label>
+                <div class="password-field">
+                    <input id="authPassword" type="password" autocomplete="current-password" placeholder="At least 6 characters" minlength="6" required>
+                    <button id="passwordToggle" type="button" aria-label="Show password">Show</button>
+                </div>
+                <p id="authError" class="auth-error" role="alert"></p>
+                <button id="authSubmit" class="primary-btn auth-submit" type="submit">Sign in</button>
+            </form>
+            <button id="authToggle" class="auth-toggle" type="button">New here? Create an account</button>
+        </div>
+    </section>
+
+    <!-- =========================
+         MAIN APPLICATION
+    ========================== -->
+
+    <div id="app" class="app hidden">
+
+        <!-- =========================
+             SIDEBAR
+        ========================== -->
+
+        <aside class="sidebar">
+
+            <div class="logo">
+                <img class="logo-icon" src="icon.svg" alt="">
+                <span>StudentMate</span>
+            </div>
+
+            <nav class="navigation">
+
+                <a href="#dashboard" class="nav-link active">
+                    <span>🏠</span>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="#notes" class="nav-link">
+                    <span>📝</span>
+                    <span>Notes</span>
+                </a>
+
+                <a href="#tasks" class="nav-link">
+                    <span>✅</span>
+                    <span>Tasks</span>
+                </a>
+
+                <a href="#schedule" class="nav-link">
+                    <span>📅</span>
+                    <span>Schedule</span>
+                </a>
+
+                <a href="#notices" class="nav-link">
+                    <span>📢</span>
+                    <span>Notices</span>
+                </a>
+
+                <a href="#reports" class="nav-link">
+                    <span>📊</span>
+                    <span>Reports</span>
+                </a>
+
+                <a href="#assistant" class="nav-link">
+                    <span>✨</span>
+                    <span>Assistent</span>
+                </a>
+
+            </nav>
+
+
+            <!-- Sidebar Bottom -->
+
+            <div class="sidebar-bottom">
+
+                <a href="#profile" class="nav-link">
+                    <span>👤</span>
+                    <span>Profile</span>
+                </a>
+
+                <button id="logoutBtn" class="logout-btn">
+                    <span>🚪</span>
+                    <span>Logout</span>
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <!-- =========================
+             MAIN CONTENT
+        ========================== -->
+
+        <main class="main-content">
+
+            <!-- =========================
+                 HEADER
+            ========================== -->
+
+            <header class="top-header">
+
+                <div class="welcome">
+
+                    <h1 id="welcomeMessage">
+                        Good Morning! 👋
+                    </h1>
+
+                    <p>
+                        Welcome back to StudentMate.
+                    </p>
+
+                </div>
+
+
+                <div class="header-right">
+
+                    <button id="themeToggle" class="icon-btn" type="button" aria-label="Switch to dark mode" title="Toggle dark mode">☾</button>
+
+                    <button id="installAppBtn" class="install-app-btn hidden" type="button">Install App</button>
+
+                    <div class="date" id="currentDate">
+                        September 6, 2026
+                    </div>
+
+                    <div class="profile-mini">
+
+                        <div class="profile-avatar">
+                            👤
+                        </div>
+
+                        <div class="profile-info">
+
+                            <strong id="studentName">
+                                Student
+                            </strong>
+
+                            <span>
+                                Student
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- =========================
+                 DASHBOARD
+            ========================== -->
+
+            <section id="dashboard" class="page-section">
+
+                <!-- Statistics -->
+
+                <div class="stats-grid">
+
+                    <!-- Notes -->
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            📝
+                        </div>
+
+                        <div class="stat-info">
+
+                            <span>
+                                Total Notes
+                            </span>
+
+                            <strong id="notesCount">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Pending Tasks -->
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            ⏳
+                        </div>
+
+                        <div class="stat-info">
+
+                            <span>
+                                Pending Tasks
+                            </span>
+
+                            <strong id="tasksCount">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Completed Tasks -->
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            🎯
+                        </div>
+
+                        <div class="stat-info">
+
+                            <span>
+                                Completed
+                            </span>
+
+                            <strong id="completedCount">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Notices -->
+
+                    <div class="stat-card">
+
+                        <div class="stat-icon">
+                            📢
+                        </div>
+
+                        <div class="stat-info">
+
+                            <span>
+                                Notices
+                            </span>
+
+                            <strong id="noticesCount">
+                                0
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="panel daily-motivation-panel">
+                    <div class="panel-header">
+                        <div>
+                            <h2>🌱 Daily Motivation</h2>
+                            <p id="dailyMotivation">Small progress is still progress. Keep going.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- =========================
+                     DASHBOARD GRID
+                ========================== -->
+
+                <div class="dashboard-grid">
+
+
+                    <!-- =====================
+                         TODAY'S CLASSES
+                    ====================== -->
+
+                    <div class="panel">
+
+                        <div class="panel-header">
+
+                            <div>
+
+                                <h2>
+                                    Today's Classes
+                                </h2>
+
+                                <p>
+                                    Your classes for today
+                                </p>
+
+                            </div>
+
+                            <span class="day-badge" id="todayDay">
+                                Monday
+                            </span>
+
+                        </div>
+
+
+                        <div id="classList" class="class-list">
+
+                            <!-- Class 1 -->
+
+                            <div class="class-item">
+
+                                <div class="class-time">
+                                    10:00 AM
+                                </div>
+
+                                <div class="class-details">
+
+                                    <strong>
+                                        Database Management
+                                    </strong>
+
+                                    <span>
+                                        Room 204 • Prof. Sharma
+                                    </span>
+
+                                </div>
+
+                                <span class="subject-badge">
+                                    DBMS
+                                </span>
+
+                            </div>
+
+
+                            <!-- Class 2 -->
+
+                            <div class="class-item">
+
+                                <div class="class-time">
+                                    12:00 PM
+                                </div>
+
+                                <div class="class-details">
+
+                                    <strong>
+                                        JavaScript
+                                    </strong>
+
+                                    <span>
+                                        Room 301 • Prof. Roy
+                                    </span>
+
+                                </div>
+
+                                <span class="subject-badge">
+                                    JS
+                                </span>
+
+                            </div>
+
+
+                            <!-- Class 3 -->
+
+                            <div class="class-item">
+
+                                <div class="class-time">
+                                    2:00 PM
+                                </div>
+
+                                <div class="class-details">
+
+                                    <strong>
+                                        Computer Networks
+                                    </strong>
+
+                                    <span>
+                                        Room 105 • Prof. Das
+                                    </span>
+
+                                </div>
+
+                                <span class="subject-badge">
+                                    CN
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- =====================
+                         UPCOMING TASKS
+                    ====================== -->
+
+                    <div class="panel">
+
+                        <div class="panel-header">
+
+                            <div>
+
+                                <h2>
+                                    Upcoming Tasks
+                                </h2>
+
+                                <p>
+                                    Things you need to complete
+                                </p>
+
+                            </div>
+
+                            <button
+                                id="addTaskBtn"
+                                class="primary-btn">
+                                + Add Task
+                            </button>
+
+                        </div>
+
+
+                        <div id="taskList" class="task-list">
+
+                            <!-- Task 1 -->
+
+                            <div class="task-item">
+
+                                <div class="task-checkbox">
+
+                                    <input
+                                        type="checkbox"
+                                        id="task1">
+
+                                    <label for="task1"></label>
+
+                                </div>
+
+                                <div class="task-details">
+
+                                    <strong>
+                                        Complete DBMS Assignment
+                                    </strong>
+
+                                    <span>
+                                        Due September 10
+                                    </span>
+
+                                </div>
+
+                                <span class="priority high">
+                                    High
+                                </span>
+
+                            </div>
+
+
+                            <!-- Task 2 -->
+
+                            <div class="task-item">
+
+                                <div class="task-checkbox">
+
+                                    <input
+                                        type="checkbox"
+                                        id="task2">
+
+                                    <label for="task2"></label>
+
+                                </div>
+
+                                <div class="task-details">
+
+                                    <strong>
+                                        JavaScript Practice
+                                    </strong>
+
+                                    <span>
+                                        Due September 12
+                                    </span>
+
+                                </div>
+
+                                <span class="priority medium">
+                                    Medium
+                                </span>
+
+                            </div>
+
+
+                            <!-- Task 3 -->
+
+                            <div class="task-item">
+
+                                <div class="task-checkbox">
+
+                                    <input
+                                        type="checkbox"
+                                        id="task3">
+
+                                    <label for="task3"></label>
+
+                                </div>
+
+                                <div class="task-details">
+
+                                    <strong>
+                                        Read Computer Networks
+                                    </strong>
+
+                                    <span>
+                                        Due September 15
+                                    </span>
+
+                                </div>
+
+                                <span class="priority low">
+                                    Low
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =========================
+                     LATEST NOTICES
+                ========================== -->
+
+                <div id="notices" class="panel notices-panel">
+
+                    <div class="panel-header">
+
+                        <div>
+
+                            <h2>
+                                📢 Latest Notices
+                            </h2>
+
+                            <p>
+                                Important college announcements
+                            </p>
+
+                        </div>
+
+                        <button
+                            id="viewAllNoticesBtn"
+                            class="secondary-btn">
+                            View All
+                        </button>
+
+                    </div>
+
+
+                    <div id="noticeList" class="notice-list">
+
+
+                        <!-- Notice 1 -->
+
+                        <div class="notice-item">
+
+                            <div class="notice-icon">
+                                📚
+                            </div>
+
+                            <div class="notice-content">
+
+                                <strong>
+                                    Internal Examination Schedule
+                                </strong>
+
+                                <p>
+                                    Internal examinations will begin next week.
+                                </p>
+
+                                <span>
+                                    September 5, 2026
+                                </span>
+
+                            </div>
+
+                            <span class="important-badge">
+                                Important
+                            </span>
+
+                        </div>
+
+
+                        <!-- Notice 2 -->
+
+                        <div class="notice-item">
+
+                            <div class="notice-icon">
+                                🎉
+                            </div>
+
+                            <div class="notice-content">
+
+                                <strong>
+                                    Annual College Fest
+                                </strong>
+
+                                <p>
+                                    Registration for the annual college fest is now open.
+                                </p>
+
+                                <span>
+                                    September 4, 2026
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <section id="assistant" class="page-section hidden">
+                <div class="page-title">
+                    <div>
+                        <h1>✨ Assistent</h1>
+                        <p>Plan tasks, get practical study suggestions, and stay encouraged.</p>
+                    </div>
+                </div>
+
+                <div class="assistant-layout">
+                    <div class="panel assistant-panel">
+                        <div class="assistant-heading">
+                            <div class="assistant-orb">✦</div>
+                            <div><h2>Hi, <span id="assistantName">Student</span>!</h2><p>I’m Aria, your study buddy. I can add tasks, suggest your next step, and remind you when it is time to begin.</p></div>
+                        </div>
+                        <div class="voice-picker">
+                            <div class="voice-picker-heading"><div><h3>Choose assistant voice</h3><p id="selectedVoiceName">Aria · Female</p></div><span>5 voices</span></div>
+                            <div id="voiceProfiles" class="voice-profiles"></div>
+                        </div>
+                        <div id="assistantMessages" class="assistant-messages" aria-live="polite"></div>
+                        <div class="assistant-suggestions">
+                            <button class="suggestion-btn" type="button" data-prompt="What should I study next?">What should I study next?</button>
+                            <button class="suggestion-btn" type="button" data-prompt="Give me a study plan">Give me a study plan</button>
+                            <button class="suggestion-btn" type="button" data-prompt="How am I doing?">How am I doing?</button>
+                        </div>
+                        <form id="assistantForm" class="assistant-input-row">
+                            <input id="assistantInput" type="text" autocomplete="off" placeholder="Try: add task Revise DBMS due tomorrow at 18:00" aria-label="Message Aria AI">
+                            <button id="voiceBtn" class="icon-btn" type="button" aria-label="Use voice input" title="Use voice input">🎙️</button>
+                            <button id="voiceReplyBtn" class="icon-btn" type="button" aria-label="Enable Aria voice replies" aria-pressed="false" title="Enable Aria voice replies">🔊</button>
+                            <button class="primary-btn" type="submit">Send</button>
+                        </form>
+                        <p id="voiceStatus" class="voice-status" aria-live="polite"></p>
+                    </div>
+                    <aside class="panel assistant-tips">
+                        <h2>Try asking Aria</h2>
+                        <p>“Add task Read chapter 3 due tomorrow at 19:00”</p>
+                        <p>“Remind me to revise JavaScript at 20:00”</p>
+                        <p>“Give me a focused plan for today”</p>
+                        <div class="assistant-reminder-note">🔔 Reminders work while this page is open. Allow notifications when your browser asks.</div>
+                    </aside>
+                </div>
+            </section>
+
+            <!-- =========================
+                 NOTES PAGE
+            ========================== -->
+
+            <section
+                id="notes"
+                class="page-section hidden">
+
+                <div class="page-title">
+
+                    <div>
+
+                        <h1>
+                            📝 My Notes
+                        </h1>
+
+                        <p>
+                            Create and manage your study notes.
+                        </p>
+
+                    </div>
+
+                    <button
+                        id="addNoteBtn"
+                        class="primary-btn">
+                        + Add Note
+                    </button>
+
+                </div>
+
+
+                <!-- Search -->
+
+                <div class="search-container">
+
+                    <input
+                        type="text"
+                        id="noteSearch"
+                        placeholder="Search your notes...">
+
+                    <select id="noteSubjectFilter">
+
+                        <option value="all">
+                            All Subjects
+                        </option>
+
+                        <option value="DBMS">
+                            DBMS
+                        </option>
+
+                        <option value="JavaScript">
+                            JavaScript
+                        </option>
+
+                        <option value="Computer Networks">
+                            Computer Networks
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div
+                    id="notesList"
+                    class="notes-grid">
+
+                    <!-- Notes will be added by JavaScript -->
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 TASKS PAGE
+            ========================== -->
+
+            <section
+                id="tasks"
+                class="page-section hidden">
+
+                <div class="page-title">
+
+                    <div>
+
+                        <h1>
+                            ✅ My Tasks
+                        </h1>
+
+                        <p>
+                            Manage your assignments and daily tasks.
+                        </p>
+
+                    </div>
+
+                    <button
+                        id="addTaskPageBtn"
+                        class="primary-btn">
+                        + Add Task
+                    </button>
+
+                </div>
+
+
+                <div class="task-filters">
+
+                    <button
+                        class="filter-btn active"
+                        data-filter="all">
+                        All
+                    </button>
+
+                    <button
+                        class="filter-btn"
+                        data-filter="pending">
+                        Pending
+                    </button>
+
+                    <button
+                        class="filter-btn"
+                        data-filter="completed">
+                        Completed
+                    </button>
+
+                    <button
+                        class="filter-btn"
+                        data-filter="high">
+                        High Priority
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="allTasksList"
+                    class="all-tasks-list">
+
+                    <!-- Tasks will be added by JavaScript -->
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 SCHEDULE PAGE
+            ========================== -->
+
+            <section
+                id="schedule"
+                class="page-section hidden">
+
+                <div class="page-title">
+
+                    <div>
+
+                        <h1>
+                            📅 Class Schedule
+                        </h1>
+
+                        <p>
+                            Your weekly class timetable.
+                        </p>
+
+                    </div>
+
+                    <button
+                        id="addClassBtn"
+                        class="primary-btn">
+                        + Add Class
+                    </button>
+
+                </div>
+
+
+                <div class="schedule-container">
+
+                    <div class="schedule-day" data-day="Monday">
+
+                        <h3>
+                            Monday
+                        </h3>
+
+                        <div class="schedule-class">
+
+                            <strong>
+                                Database Management
+                            </strong>
+
+                            <span>
+                                10:00 AM - 11:00 AM
+                            </span>
+
+                            <small>
+                                Room 204
+                            </small>
+
+                        </div>
+
+                        <div class="schedule-class">
+
+                            <strong>
+                                JavaScript
+                            </strong>
+
+                            <span>
+                                12:00 PM - 1:00 PM
+                            </span>
+
+                            <small>
+                                Room 301
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="schedule-day" data-day="Tuesday">
+
+                        <h3>
+                            Tuesday
+                        </h3>
+
+                        <div class="schedule-class">
+
+                            <strong>
+                                Computer Networks
+                            </strong>
+
+                            <span>
+                                10:00 AM - 11:00 AM
+                            </span>
+
+                            <small>
+                                Room 105
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="schedule-day" data-day="Wednesday">
+
+                        <h3>
+                            Wednesday
+                        </h3>
+
+                        <div class="empty-schedule">
+                            No classes added yet.
+                        </div>
+
+                    </div>
+
+
+                    <div class="schedule-day" data-day="Thursday">
+
+                        <h3>
+                            Thursday
+                        </h3>
+
+                        <div class="empty-schedule">
+                            No classes added yet.
+                        </div>
+
+                    </div>
+
+
+                    <div class="schedule-day" data-day="Friday">
+
+                        <h3>
+                            Friday
+                        </h3>
+
+                        <div class="empty-schedule">
+                            No classes added yet.
+                        </div>
+
+                    </div>
+
+
+                    <div class="schedule-day" data-day="Saturday">
+
+                        <h3>
+                            Saturday
+                        </h3>
+
+                        <div class="empty-schedule">
+                            No classes added yet.
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 NOTICES PAGE
+            ========================== -->
+
+            <section
+                id="notices"
+                class="page-section hidden">
+
+                <div class="page-title">
+
+                    <div>
+
+                        <h1>
+                            📢 College Notices
+                        </h1>
+
+                        <p>
+                            Stay updated with important announcements.
+                        </p>
+
+                    </div>
+
+                    <button
+                        id="addNoticeBtn"
+                        class="primary-btn">
+                        + Add Notice
+                    </button>
+
+                </div>
+
+
+                <div class="search-container">
+
+                    <input
+                        type="text"
+                        id="noticeSearch"
+                        placeholder="Search notices...">
+
+                    <select id="noticeCategoryFilter">
+
+                        <option value="all">
+                            All Categories
+                        </option>
+
+                        <option value="exam">
+                            Exams
+                        </option>
+
+                        <option value="event">
+                            Events
+                        </option>
+
+                        <option value="general">
+                            General
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div
+                    id="allNoticesList"
+                    class="all-notices-list">
+
+                    <!-- Notices will be added by JavaScript -->
+
+                </div>
+
+            </section>
+
+
+            <!-- =========================
+                 PROFILE PAGE
+            ========================== -->
+
+            <section
+                id="profile"
+                class="page-section hidden">
+
+                <div class="page-title">
+
+                    <div>
+
+                        <h1>
+                            👤 My Profile
+                        </h1>
+
+                        <p>
+                            Manage your StudentMate profile.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="profile-card">
+
+                    <div class="avatar-column">
+                        <div id="largeAvatar" class="large-avatar">
+                            👤
+                        </div>
+                        <input id="profilePhoto" class="hidden" type="file" accept="image/*">
+                        <button id="uploadPhotoBtn" class="secondary-btn" type="button">Upload Photo</button>
+                        <div class="avatar-options" aria-label="Choose a default avatar">
+                            <button class="avatar-option" data-avatar="🧑‍🎓" type="button" aria-label="Student avatar">🧑‍🎓</button>
+                            <button class="avatar-option" data-avatar="👩‍💻" type="button" aria-label="Developer avatar">👩‍💻</button>
+                            <button class="avatar-option" data-avatar="🧑‍🚀" type="button" aria-label="Astronaut avatar">🧑‍🚀</button>
+                            <button class="avatar-option" data-avatar="🦊" type="button" aria-label="Fox avatar">🦊</button>
+                        </div>
+                    </div>
+
+                    <div class="profile-form">
+
+                        <label>
+                            Full Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="profileName"
+                            placeholder="Enter your name">
+
+
+                        <label>
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="profileEmail"
+                            placeholder="Enter your email">
+
+
+                        <label>
+                            Course
+                        </label>
+
+                        <input
+                            type="text"
+                            id="profileCourse"
+                            placeholder="Enter your course">
+
+
+                        <button
+                            id="saveProfileBtn"
+                            class="primary-btn">
+                            Save Changes
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+            <section id="reports" class="page-section hidden">
+                <div class="page-title">
+                    <div>
+                        <h1>📊 Progress Reports</h1>
+                        <p>See how much of your planned work you completed.</p>
+                    </div>
+                    <button id="downloadReportBtn" class="primary-btn" type="button">Download PDF</button>
+                </div>
+
+                <div class="report-toolbar">
+                    <label for="reportPeriod">Report period</label>
+                    <select id="reportPeriod">
+                        <option value="week">This week</option>
+                        <option value="month">This month</option>
+                    </select>
+                    <span id="reportDateRange" class="report-range"></span>
+                </div>
+
+                <div class="report-summary">
+                    <div class="report-score"><strong id="reportPercentage">0%</strong><span>completion rate</span></div>
+                    <div><span>Completed</span><strong id="reportCompleted">0</strong></div>
+                    <div><span>Planned</span><strong id="reportPlanned">0</strong></div>
+                    <div><span>Remaining</span><strong id="reportRemaining">0</strong></div>
+                </div>
+                <div class="panel report-panel">
+                    <div class="panel-header"><div><h2>Tasks in this period</h2><p id="reportMessage">Your task breakdown will appear here.</p></div></div>
+                    <div id="reportTaskList" class="report-task-list"></div>
+                </div>
+            </section>
+
+        </main>
+
+    </div>
+
+    <button id="ariaFloatBtn" class="aria-float-btn hidden" type="button" aria-label="Open Aria AI assistant" title="Open Aria AI assistant">
+        <span id="ariaFloatAvatar" class="aria-float-icon">👩🏻‍🎓</span>
+        <span class="aria-float-label">Aria</span>
+    </button>
+
+
+    <!-- =========================
+         ADD TASK MODAL
+    ========================== -->
+
+    <div
+        id="taskModal"
+        class="modal hidden">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h2>
+                    Add New Task
+                </h2>
+
+                <button
+                    class="close-modal"
+                    data-modal="taskModal">
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="taskForm">
+
+                <label for="taskTitle">
+                    Task Title
+                </label>
+
+                <input
+                    type="text"
+                    id="taskTitle"
+                    placeholder="Enter task title"
+                    required>
+
+
+                <label for="taskSubject">
+                    Subject
+                </label>
+
+                <input
+                    type="text"
+                    id="taskSubject"
+                    placeholder="e.g. DBMS"
+                    required>
+
+
+                <label for="taskDueDate">
+                    Due Date
+                </label>
+
+                <input
+                    type="date"
+                    id="taskDueDate"
+                    required>
+
+                <label for="taskReminderTime">
+                    Reminder time (optional)
+                </label>
+
+                <input
+                    type="datetime-local"
+                    id="taskReminderTime">
+
+
+                <label for="taskPriority">
+                    Priority
+                </label>
+
+                <select id="taskPriority">
+
+                    <option value="low">
+                        Low
+                    </option>
+
+                    <option value="medium">
+                        Medium
+                    </option>
+
+                    <option value="high">
+                        High
+                    </option>
+
+                </select>
+
+
+                <button
+                    type="submit"
+                    class="primary-btn">
+                    Add Task
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         ADD NOTE MODAL
+    ========================== -->
+
+    <div
+        id="noteModal"
+        class="modal hidden">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h2>
+                    Create New Note
+                </h2>
+
+                <button
+                    class="close-modal"
+                    data-modal="noteModal">
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="noteForm">
+
+                <label for="noteTitle">
+                    Note Title
+                </label>
+
+                <input
+                    type="text"
+                    id="noteTitle"
+                    placeholder="Enter note title"
+                    required>
+
+
+                <label for="noteSubject">
+                    Subject
+                </label>
+
+                <input
+                    type="text"
+                    id="noteSubject"
+                    placeholder="e.g. JavaScript"
+                    required>
+
+
+                <label for="noteContent">
+                    Note
+                </label>
+
+                <textarea
+                    id="noteContent"
+                    rows="7"
+                    placeholder="Write your notes here..."
+                    required>
+                </textarea>
+
+
+                <button
+                    type="submit"
+                    class="primary-btn">
+                    Save Note
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         ADD CLASS MODAL
+    ========================== -->
+
+    <div
+        id="classModal"
+        class="modal hidden">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h2>
+                    Add Class
+                </h2>
+
+                <button
+                    class="close-modal"
+                    data-modal="classModal">
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="classForm">
+
+                <label for="classSubject">
+                    Subject
+                </label>
+
+                <input
+                    type="text"
+                    id="classSubject"
+                    placeholder="e.g. Mathematics"
+                    required>
+
+
+                <label for="teacherName">
+                    Teacher
+                </label>
+
+                <input
+                    type="text"
+                    id="teacherName"
+                    placeholder="Teacher name"
+                    required>
+
+
+                <label for="classRoom">
+                    Room
+                </label>
+
+                <input
+                    type="text"
+                    id="classRoom"
+                    placeholder="e.g. Room 204"
+                    required>
+
+
+                <label for="classDay">
+                    Day
+                </label>
+
+                <select id="classDay">
+
+                    <option value="Monday">
+                        Monday
+                    </option>
+
+                    <option value="Tuesday">
+                        Tuesday
+                    </option>
+
+                    <option value="Wednesday">
+                        Wednesday
+                    </option>
+
+                    <option value="Thursday">
+                        Thursday
+                    </option>
+
+                    <option value="Friday">
+                        Friday
+                    </option>
+
+                    <option value="Saturday">
+                        Saturday
+                    </option>
+
+                </select>
+
+
+                <label for="classStartTime">
+                    Start Time
+                </label>
+
+                <input
+                    type="time"
+                    id="classStartTime"
+                    required>
+
+
+                <label for="classEndTime">
+                    End Time
+                </label>
+
+                <input
+                    type="time"
+                    id="classEndTime"
+                    required>
+
+
+                <button
+                    type="submit"
+                    class="primary-btn">
+                    Add Class
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         ADD NOTICE MODAL
+    ========================== -->
+
+    <div
+        id="noticeModal"
+        class="modal hidden">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h2>
+                    Add Notice
+                </h2>
+
+                <button
+                    class="close-modal"
+                    data-modal="noticeModal">
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="noticeForm">
+
+                <label for="noticeTitle">
+                    Notice Title
+                </label>
+
+                <input
+                    type="text"
+                    id="noticeTitle"
+                    placeholder="Enter notice title"
+                    required>
+
+
+                <label for="noticeDescription">
+                    Description
+                </label>
+
+                <textarea
+                    id="noticeDescription"
+                    rows="5"
+                    placeholder="Write notice details..."
+                    required>
+                </textarea>
+
+
+                <label for="noticeCategory">
+                    Category
+                </label>
+
+                <select id="noticeCategory">
+
+                    <option value="exam">
+                        Exam
+                    </option>
+
+                    <option value="event">
+                        Event
+                    </option>
+
+                    <option value="general">
+                        General
+                    </option>
+
+                </select>
+
+
+                <label class="checkbox-label">
+
+                    <input
+                        type="checkbox"
+                        id="noticeImportant">
+
+                    Mark as important
+
+                </label>
+
+
+                <button
+                    type="submit"
+                    class="primary-btn">
+                    Add Notice
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         JAVASCRIPT
+    ========================== -->
+    
+<script src="index.js"></script>
+
+</body>
+
+</html>

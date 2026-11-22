@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">StudentMate</string>
+    <string name="title_activity_main">StudentMate</string>
+    <string name="package_name">com.studentmate.app</string>
+    <string name="custom_url_scheme">com.studentmate.app</string>
+</resources>
